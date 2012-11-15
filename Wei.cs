@@ -20,52 +20,73 @@ public class Wei : IAutoTamper    // Ensure class is public, or Fiddler won't se
            sure any needed data structures are initialized to safe values here in this constructor */
 
 
-        List<MenuItem> list = new List<MenuItem>();
-        list.Add(new MenuItem() { Text = Color.GreenYellow.Name });
-        list.Add(new MenuItem() { Text = Color.Red.Name });
-        list.Add(new MenuItem() { Text = Color.Blue.Name });
-        list.Add(new MenuItem() { Text = Color.LightSkyBlue.Name });
-        list.Add(new MenuItem() { Text = Color.Green.Name });
-        foreach (MenuItem mi in list)
-        {
-            mi.Click += new EventHandler(mi_Click);
-        }
-        mnuColors = new MenuItem();
-        mnuColors.MenuItems.AddRange(list.ToArray());
-        this.mnuColors.Text = "Highlight&Color";
+        //List<MenuItem> list = new List<MenuItem>();
+        //list.Add(new MenuItem() { Text = Color.GreenYellow.Name });
+        //list.Add(new MenuItem() { Text = Color.Red.Name });
+        //list.Add(new MenuItem() { Text = Color.Blue.Name });
+        //list.Add(new MenuItem() { Text = Color.LightSkyBlue.Name });
+        //list.Add(new MenuItem() { Text = Color.Green.Name });
+        //foreach (MenuItem mi in list)
+        //{
+        //    mi.Click += new EventHandler(mi_Click);
+        //}
+        //mnuColors = new MenuItem();
+        //mnuColors.MenuItems.AddRange(list.ToArray());
+        //this.mnuColors.Text = "Highlight&Color";
+#if DEBUG
+        Log("Weiddler creating.......");
+#endif
     }
 
-    void mi_Click(object sender, EventArgs e)
-    {
-        defaultColor = (sender as MenuItem).Text.ToLower();
-    }
+    //void mi_Click(object sender, EventArgs e)
+    //{
+    //    defaultColor = (sender as MenuItem).Text.ToLower();
+    //}
 
 
 
     public void OnLoad()
     {
+
         /* Load your UI here */
         FiddlerScript fs = new FiddlerScript();
-        fs.UI.lvSessions.AddBoundColumn("HostIP", 100, "x-hostIP");  //Add host IP
-        //Change HostIP column index, in the left of Host column
-        int idx = 0;
-        for (int i = 0; i < fs.UI.lvSessions.Columns.Count; i++)
-        {
-            if (fs.UI.lvSessions.Columns[i].Text.Equals("Host", StringComparison.OrdinalIgnoreCase))
-            {
-                idx = i;
-                break;
-            }
-        }
-        fs.UI.lvSessions.SetColumnOrderAndWidth("HostIP", idx, 100);
-        FiddlerApplication.UI.mnuMain.MenuItems.Add(mnuColors);
-        fs.ReloadScript();
 
+        try
+        {
+            fs.UI.lvSessions.AddBoundColumn("HostIP", 100, "x-hostIP");  //Add host IP
+            //Change HostIP column index, in the left of Host column
+            int idx = 0;
+            for (int i = 0; i < fs.UI.lvSessions.Columns.Count; i++)
+            {
+                if (fs.UI.lvSessions.Columns[i].Text.Equals("Host", StringComparison.OrdinalIgnoreCase))
+                {
+                    idx = i;
+                    break;
+                }
+            }
+            fs.UI.lvSessions.SetColumnOrderAndWidth("HostIP", idx, 100);
+            fs.ReloadScript();
+        }
+        catch (Exception ex)
+        {
+            Log(ex.ToString());
+        }
+
+#if DEBUG
+        Log("Weiddler OnLoad.......");
+#endif
 
         TabPage oPage = new TabPage("Weiddler");
         oPage.ImageIndex = (int)Fiddler.SessionIcons.Silverlight;  //This sets the Icon image used in the tab
         Weiddler.ucWei oView = new Weiddler.ucWei(); //UserControl1 is a Windows Forms UserControl class
-        oView.InitSQLiteData();
+        try
+        {
+            oView.InitSQLiteData();
+        }
+        catch (Exception ex)
+        {
+            Log(ex.ToString());
+        }
         oView.Dock = DockStyle.Fill;
         oPage.Controls.Add(oView);
         FiddlerApplication.UI.tabsViews.TabPages.Add(oPage);

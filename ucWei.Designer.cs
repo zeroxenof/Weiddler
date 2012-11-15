@@ -36,22 +36,23 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dgUrlColors = new System.Windows.Forms.DataGridView();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtHostOrIP = new System.Windows.Forms.TextBox();
-            this.btnPing = new System.Windows.Forms.Button();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.splitContainer_NU = new System.Windows.Forms.SplitContainer();
-            this.rtbNU = new System.Windows.Forms.RichTextBox();
-            this.btnNSLookup = new System.Windows.Forms.Button();
-            this.btnTracert = new System.Windows.Forms.Button();
-            this.btnTelnet = new System.Windows.Forms.Button();
-            this.txtPort = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.txtPort = new System.Windows.Forms.TextBox();
+            this.btnTelnet = new System.Windows.Forms.Button();
+            this.btnTracert = new System.Windows.Forms.Button();
+            this.btnNSLookup = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnPing = new System.Windows.Forms.Button();
+            this.txtHostOrIP = new System.Windows.Forms.TextBox();
+            this.rtbNU = new System.Windows.Forms.RichTextBox();
+            this.btnRemove = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgUrlColors)).BeginInit();
+            this.tabPage2.SuspendLayout();
             this.splitContainer_NU.Panel1.SuspendLayout();
             this.splitContainer_NU.Panel2.SuspendLayout();
             this.splitContainer_NU.SuspendLayout();
@@ -74,7 +75,7 @@
             // 
             // btnSaveUrlColor
             // 
-            this.btnSaveUrlColor.Location = new System.Drawing.Point(470, 6);
+            this.btnSaveUrlColor.Location = new System.Drawing.Point(397, 6);
             this.btnSaveUrlColor.Name = "btnSaveUrlColor";
             this.btnSaveUrlColor.Size = new System.Drawing.Size(75, 23);
             this.btnSaveUrlColor.TabIndex = 2;
@@ -113,6 +114,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnRemove);
             this.tabPage1.Controls.Add(this.dgUrlColors);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.btnSaveUrlColor);
@@ -126,17 +128,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "ColorYourUrl";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.splitContainer_NU);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(581, 451);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "NetworkUtility";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // dgUrlColors
             // 
@@ -154,32 +145,16 @@
             this.dgUrlColors.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgUrlColors_CellFormatting);
             this.dgUrlColors.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgUrlColors_RowEnter);
             // 
-            // label3
+            // tabPage2
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 8);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(20, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "IP:";
-            // 
-            // txtHostOrIP
-            // 
-            this.txtHostOrIP.Location = new System.Drawing.Point(51, 4);
-            this.txtHostOrIP.Name = "txtHostOrIP";
-            this.txtHostOrIP.Size = new System.Drawing.Size(159, 20);
-            this.txtHostOrIP.TabIndex = 1;
-            this.txtHostOrIP.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPing_KeyPress);
-            // 
-            // btnPing
-            // 
-            this.btnPing.Location = new System.Drawing.Point(216, 3);
-            this.btnPing.Name = "btnPing";
-            this.btnPing.Size = new System.Drawing.Size(53, 23);
-            this.btnPing.TabIndex = 2;
-            this.btnPing.Text = "Ping";
-            this.btnPing.UseVisualStyleBackColor = true;
-            this.btnPing.Click += new System.EventHandler(this.btnPing_Click);
+            this.tabPage2.Controls.Add(this.splitContainer_NU);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(581, 451);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "NetworkUtility";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // splitContainer_NU
             // 
@@ -206,34 +181,21 @@
             this.splitContainer_NU.SplitterDistance = 39;
             this.splitContainer_NU.TabIndex = 3;
             // 
-            // rtbNU
+            // label4
             // 
-            this.rtbNU.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbNU.Location = new System.Drawing.Point(0, 0);
-            this.rtbNU.Name = "rtbNU";
-            this.rtbNU.Size = new System.Drawing.Size(575, 402);
-            this.rtbNU.TabIndex = 0;
-            this.rtbNU.Text = "";
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(461, 8);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(29, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Port:";
             // 
-            // btnNSLookup
+            // txtPort
             // 
-            this.btnNSLookup.Location = new System.Drawing.Point(275, 3);
-            this.btnNSLookup.Name = "btnNSLookup";
-            this.btnNSLookup.Size = new System.Drawing.Size(66, 23);
-            this.btnNSLookup.TabIndex = 3;
-            this.btnNSLookup.Text = "NSLookup";
-            this.btnNSLookup.UseVisualStyleBackColor = true;
-            this.btnNSLookup.Click += new System.EventHandler(this.btnNSLookup_Click);
-            // 
-            // btnTracert
-            // 
-            this.btnTracert.Location = new System.Drawing.Point(347, 3);
-            this.btnTracert.Name = "btnTracert";
-            this.btnTracert.Size = new System.Drawing.Size(52, 23);
-            this.btnTracert.TabIndex = 4;
-            this.btnTracert.Text = "Tracert";
-            this.btnTracert.UseVisualStyleBackColor = true;
-            this.btnTracert.Click += new System.EventHandler(this.btnTracert_Click);
+            this.txtPort.Location = new System.Drawing.Point(496, 6);
+            this.txtPort.Name = "txtPort";
+            this.txtPort.Size = new System.Drawing.Size(47, 20);
+            this.txtPort.TabIndex = 6;
             // 
             // btnTelnet
             // 
@@ -245,21 +207,71 @@
             this.btnTelnet.UseVisualStyleBackColor = true;
             this.btnTelnet.Click += new System.EventHandler(this.btnTelnet_Click);
             // 
-            // txtPort
+            // btnTracert
             // 
-            this.txtPort.Location = new System.Drawing.Point(496, 6);
-            this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(47, 20);
-            this.txtPort.TabIndex = 6;
+            this.btnTracert.Location = new System.Drawing.Point(347, 3);
+            this.btnTracert.Name = "btnTracert";
+            this.btnTracert.Size = new System.Drawing.Size(52, 23);
+            this.btnTracert.TabIndex = 4;
+            this.btnTracert.Text = "Tracert";
+            this.btnTracert.UseVisualStyleBackColor = true;
+            this.btnTracert.Click += new System.EventHandler(this.btnTracert_Click);
             // 
-            // label4
+            // btnNSLookup
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(461, 8);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(29, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Port:";
+            this.btnNSLookup.Location = new System.Drawing.Point(275, 3);
+            this.btnNSLookup.Name = "btnNSLookup";
+            this.btnNSLookup.Size = new System.Drawing.Size(66, 23);
+            this.btnNSLookup.TabIndex = 3;
+            this.btnNSLookup.Text = "NSLookup";
+            this.btnNSLookup.UseVisualStyleBackColor = true;
+            this.btnNSLookup.Click += new System.EventHandler(this.btnNSLookup_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(8, 8);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(20, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "IP:";
+            // 
+            // btnPing
+            // 
+            this.btnPing.Location = new System.Drawing.Point(216, 3);
+            this.btnPing.Name = "btnPing";
+            this.btnPing.Size = new System.Drawing.Size(53, 23);
+            this.btnPing.TabIndex = 2;
+            this.btnPing.Text = "Ping";
+            this.btnPing.UseVisualStyleBackColor = true;
+            this.btnPing.Click += new System.EventHandler(this.btnPing_Click);
+            // 
+            // txtHostOrIP
+            // 
+            this.txtHostOrIP.Location = new System.Drawing.Point(51, 4);
+            this.txtHostOrIP.Name = "txtHostOrIP";
+            this.txtHostOrIP.Size = new System.Drawing.Size(159, 20);
+            this.txtHostOrIP.TabIndex = 1;
+            this.txtHostOrIP.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPing_KeyPress);
+            // 
+            // rtbNU
+            // 
+            this.rtbNU.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbNU.Location = new System.Drawing.Point(0, 0);
+            this.rtbNU.Name = "rtbNU";
+            this.rtbNU.Size = new System.Drawing.Size(575, 402);
+            this.rtbNU.TabIndex = 0;
+            this.rtbNU.Text = "";
+            // 
+            // btnRemove
+            // 
+            this.btnRemove.Location = new System.Drawing.Point(478, 6);
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(75, 23);
+            this.btnRemove.TabIndex = 7;
+            this.btnRemove.Text = "Remove";
+            this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // ucWei
             // 
@@ -272,8 +284,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgUrlColors)).EndInit();
+            this.tabPage2.ResumeLayout(false);
             this.splitContainer_NU.Panel1.ResumeLayout(false);
             this.splitContainer_NU.Panel1.PerformLayout();
             this.splitContainer_NU.Panel2.ResumeLayout(false);
@@ -304,6 +316,7 @@
         private System.Windows.Forms.Button btnTelnet;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtPort;
+        private System.Windows.Forms.Button btnRemove;
 
     }
 }

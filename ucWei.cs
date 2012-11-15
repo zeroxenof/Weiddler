@@ -18,11 +18,48 @@ namespace Weiddler
 {
     public partial class ucWei : UserControl
     {
+
         public ucWei()
         {
+#if DEBUG
+            Log("Weiddler Tab Loading...");
+#endif
             InitializeComponent();
-            //FiddlerApplication.Log.OnLogString += Log_OnLogString;
-            SQLiteHelper.SetConnectionString(@"Data Source=D:\Program Files\Fiddler2\Scripts\weddler.db;Pooling=true;password=");
+            try
+            {
+                TryGetSoftwarePath("fiddler2", out dbFile);
+            }
+            catch (Exception ex)
+            {
+                Log(ex.ToString());
+            }
+            if (string.IsNullOrEmpty(dbFile))
+            {
+                Log("fiddler not found!");
+                //return;
+            }
+            else
+            {
+                Log("dbFile:\t" + dbFile);
+                try
+                {
+                    dbFile = Path.GetDirectoryName(dbFile);
+                }
+                catch (Exception ex)
+                {
+                    Log(ex.ToString());
+                    dbFile = dbFile.ToLower().Replace("fiddler.exe", "");
+                }
+                dbFile = Path.Combine(dbFile, @"Scripts\weiddler.db");
+
+                Log("dbFile:\t" + dbFile);
+            }
+
+            string connStr = "Data Source=" + dbFile + ";Pooling=true;password=";
+#if DEBUG
+            Log("connStr:\t" + connStr);
+#endif
+            SQLiteHelper.SetConnectionString(connStr);
         }
 
         private void NSButtonsChange(bool status)
@@ -32,13 +69,9 @@ namespace Weiddler
             btnTracert.Enabled = status;
             btnTelnet.Enabled = status;
         }
+        private string dbFile = @"D:\Program Files (x86)\Fiddler2\Scripts\weiddler.db";
 
 
-        string dbFile = @"D:\Program Files\Fiddler2\Scripts\weddler.db";
-        void Log_OnLogString(object sender, Fiddler.LogEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
         public static Dictionary<string, Color> UrlColorMapping = new Dictionary<string, Color>();
         public Dictionary<string, bool> nuSwitcher = new Dictionary<string, bool>();
 
@@ -72,6 +105,7 @@ namespace Weiddler
                 SQLiteConnectionStringBuilder connBuild = new SQLiteConnectionStringBuilder();
                 connBuild.DataSource = dbFile;
                 connBuild.Pooling = true;
+
                 connBuild.Password = "";
                 string connStr = connBuild.ConnectionString;
                 if (!File.Exists(dbFile))
@@ -91,6 +125,7 @@ namespace Weiddler
                         cmd.ExecuteNonQuery();
                     }
                 }
+
 
                 //string connStr = @"Data Source=D:\Program Files\Fiddler2\Scripts\weddler.db;Pooling=true;";
 
@@ -434,7 +469,132 @@ namespace Weiddler
 
         #endregion
 
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            string url = txtUrl.Text;
+            if (string.IsNullOrEmpty(url))
+            {
+                MessageBox.Show("Url cannot be empty!");
+                return;
+            }
+            try
+            {
+
+                SQLiteConnectionStringBuilder connBuild = new SQLiteConnectionStringBuilder();
+                connBuild.DataSource = dbFile;
+                connBuild.Pooling = true;
+
+                connBuild.Password = "";
+                string connStr = connBuild.ConnectionString;
+                if (!File.Exists(dbFile))
+                {
+                    SQLiteConnection.CreateFile(dbFile);
+                    using (SQLiteConnection conn = new SQLiteConnection(connStr))
+                    {
+                        conn.Open();
+                        string cmdStr = string.Format(@"CREATE TABLE [T_Config] (
+                                                                        [AutoID] INTEGER  NOT NULL PRIMARY KEY,
+                                                                        [Url] NVARCHAR(50)  UNIQUE NULL,
+                                                                        [Color] NVARCHAR(10)  NULL
+                                                                        )");
+                        SQLiteCommand cmd = new SQLiteCommand(conn);
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = cmdStr;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                using (SQLiteConnection conn = new SQLiteConnection(connStr))
+                {
+                    conn.Open();
+                    string cmdStr = string.Format(@"delete from T_CONFIG  where url='{0}'", url);
+                    SQLiteCommand cmd = new SQLiteCommand(conn);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = cmdStr;
+                    cmd.ExecuteNonQuery();
+                }
+                LoadSQLiteData();
+            }
+            catch (Exception ex)
+            {
+                Log(ex.Message);
+                Log(ex.StackTrace);
+                MessageBox.Show("SQLite Error! " + ex.Message);
+
+            }
+        }
+
+
+        public bool TryGetSoftwarePath(string softName, out string path)
+        {
+            string strPathResult = string.Empty;
+            string strKeyName = "";     //"(Default)" key, which contains the intalled path 
+            object objResult = null;
+
+            Microsoft.Win32.RegistryValueKind regValueKind;
+            Microsoft.Win32.RegistryKey regKey = null;
+            Microsoft.Win32.RegistryKey regSubKey = null;
+
+            try
+            {
+                //Read the key 
+                regKey = Microsoft.Win32.Registry.LocalMachine;
+                regSubKey = regKey.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\" + softName.ToString() + ".exe", false);
+
+                //Read the path 
+                objResult = regSubKey.GetValue(strKeyName);
+                regValueKind = regSubKey.GetValueKind(strKeyName);
+
+                //Set the path 
+                if (regValueKind == Microsoft.Win32.RegistryValueKind.String)
+                {
+                    strPathResult = objResult.ToString();
+                }
+            }
+            catch (System.Security.SecurityException ex)
+            {
+                Log("You have no right to read the registry!" + Environment.NewLine + ex.Message);
+                throw new System.Security.SecurityException("You have no right to read the registry!", ex);
+
+            }
+            catch (Exception ex)
+            {
+                Log("Reading registry error!" + Environment.NewLine + ex.Message);
+                throw new Exception("Reading registry error!", ex);
+
+            }
+            finally
+            {
+
+                if (regKey != null)
+                {
+                    regKey.Close();
+                    regKey = null;
+                }
+
+                if (regSubKey != null)
+                {
+                    regSubKey.Close();
+                    regSubKey = null;
+                }
+            }
+
+            if (strPathResult != string.Empty)
+            {
+                //Found 
+                path = strPathResult.Replace("\"", "");
+                return true;
+            }
+            else
+            {
+                //Not found 
+                path = null;
+                return false;
+            }
+        }
     }
+
+
+
     public class UrlColor
     {
         public string Url { get; set; }

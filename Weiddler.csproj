@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -47,15 +47,18 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Fiddler">
-      <HintPath>..\..\..\Program Files\Fiddler2\Fiddler.exe</HintPath>
+    <Reference Include="Fiddler, Version=2.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files (x86)\Fiddler2\Fiddler.exe</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\packages\System.Data.SQLite.1.0.82.0\lib\net20\System.Data.SQLite.dll</HintPath>
+    <Reference Include="System.Data.SQLite, Version=1.0.82.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\System.Data.SQLite.1.0.82.0\lib\net20\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SQLite.Linq">
-      <HintPath>..\packages\System.Data.SQLite.1.0.82.0\lib\net20\System.Data.SQLite.Linq.dll</HintPath>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.82.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\System.Data.SQLite.1.0.82.0\lib\net20\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -64,7 +67,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorHelper.cs" />
-    <Compile Include="SQLiteHelper.cs" />
+    <Compile Include="SQLiteHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Terminal.cs" />
     <Compile Include="ucWei.cs">
       <SubType>UserControl</SubType>
@@ -79,24 +84,30 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="packages\repositories.config" />
+    <None Include="packages\System.Data.SQLite.1.0.82.0\System.Data.SQLite.1.0.82.0.nupkg" />
+    <None Include="packages\System.Data.SQLite.1.0.82.0\tools\install.ps1" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
     <EmbeddedResource Include="ucWei.resx">
       <DependentUpon>ucWei.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="x64\SQLite.Interop.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x86\SQLite.Interop.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Content Include="packages\System.Data.SQLite.1.0.82.0\content\net20\x64\SQLite.Interop.dll" />
+    <Content Include="packages\System.Data.SQLite.1.0.82.0\content\net20\x86\SQLite.Interop.dll" />
+    <Content Include="packages\System.Data.SQLite.1.0.82.0\content\net40\x64\SQLite.Interop.dll" />
+    <Content Include="packages\System.Data.SQLite.1.0.82.0\content\net40\x86\SQLite.Interop.dll" />
+    <Content Include="packages\System.Data.SQLite.1.0.82.0\lib\net20\System.Data.SQLite.dll" />
+    <Content Include="packages\System.Data.SQLite.1.0.82.0\lib\net20\System.Data.SQLite.Linq.dll" />
+    <Content Include="packages\System.Data.SQLite.1.0.82.0\lib\net40\System.Data.SQLite.dll" />
+    <Content Include="packages\System.Data.SQLite.1.0.82.0\lib\net40\System.Data.SQLite.Linq.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "%25userprofile%25\My Documents\Fiddler2\Scripts\$(TargetFilename)"</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetPath)" "D:\我的文档\Fiddler2\Scripts\$(TargetFilename)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
